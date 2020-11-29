@@ -1,0 +1,5 @@
+env/
+backend/.env
+frontend/.env
+frontend/node_modules/
+frontend/.eslintcache
