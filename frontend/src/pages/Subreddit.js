@@ -14,6 +14,19 @@ const useStyles = theme => ({
 });
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onOrderingChange = this.onOrderingChange.bind(this);
+        this.state = {
+            ordering: "-hotness",
+        }
+    }
+
+    onOrderingChange(new_order) {
+        this.setState({
+            ordering: new_order
+        })
+    }
 
     render() {
         const { classes } = this.props;
@@ -21,8 +34,8 @@ class Home extends React.Component {
             <div className={classes.container}>
                 <TopNav />
                 <Container>
-                    <OrderBar />
-                    <PostList subredditSlug={this.props.match.params.slug}/>
+                    <OrderBar ordering={this.state.ordering} onOrderingChange={this.onOrderingChange}/>
+                    <PostList ordering={this.state.ordering} subredditSlug={this.props.match.params.slug}/>
                 </Container>
             </div>
         )

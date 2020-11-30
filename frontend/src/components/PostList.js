@@ -24,7 +24,9 @@ const useStyles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         marginRight: 10,
-        boarderRight: "1px solid black"
+        boarderRight: "1px solid black",
+        minWidth: 50,
+        alignItems: "center"
     },
     voteCount: {
         textAlign: 'center',
@@ -56,12 +58,26 @@ class PostList extends React.Component {
         this.getPosts()
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props){
+            this.getPosts()
+        }
+    }
+
     getPosts() {
-        PostService.getPosts(this.subredditSlug).then(response => {
+        PostService.getPosts(this.subredditSlug, this.props.ordering).then(response => {
             this.setState({
                 posts: response.results
             })
         })
+    }
+
+    getScore(post) {
+        const raw_score = post.score;
+        if (raw_score > 1000) {
+            return Math.round((raw_score / 1000) * 10) / 10 + "k"
+        }
+        return raw_score
     }
 
     renderPosts() {
@@ -73,7 +89,7 @@ class PostList extends React.Component {
                         <div className={classes.postContainer}>
                             <div className={classes.votesContainer}>
                                 <ArrowUpwardIcon />
-                                <div className={classes.voteCount}>{post.ups - post.downs}</div>
+                                    <div className={classes.voteCount}>{this.getScore(post)}</div>
                                 <ArrowDownwardIcon />
                             </div>
                             <div>

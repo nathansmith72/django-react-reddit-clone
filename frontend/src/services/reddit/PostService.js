@@ -4,10 +4,10 @@ import authHeader from "../auth/authHeader"
 const ROOT_URL = process.env.REACT_APP_API_URL;
 
 class PostService {
-    getPosts(subredditSlug) {
-        let url = ROOT_URL + "/api/forums/posts/";
+    getPosts(subredditSlug, ordering) {
+        let url = ROOT_URL + "/api/forums/posts/?ordering=" + ordering;
         if (subredditSlug) {
-            url += '?slug=' + subredditSlug
+            url += '&slug=' + subredditSlug
         }
         return axios.get(
             url,

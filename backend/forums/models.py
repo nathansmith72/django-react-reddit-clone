@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -21,15 +23,21 @@ class Subreddit(models.Model):
 class Post(models.Model):
     subreddit = models.ForeignKey(Subreddit, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=256, null=False, blank=False)
+    title = models.CharField(max_length=512, null=False, blank=False)
     body = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
     ups = models.IntegerField(default=0)
     downs = models.IntegerField(default=0)
     score = models.IntegerField(default=0)
+    hotness = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        hours_since_post = (datetime.datetime.now() - self.timestamp.replace(tzinfo=None)).total_seconds() / 60 / 60
+        self.hotness = round(self.score / hours_since_post)
+        super(Post, self).save(*args, **kwargs)
 
 
 class Comment(models.Model):

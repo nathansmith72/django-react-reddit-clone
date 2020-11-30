@@ -18,7 +18,12 @@ const useStyles = theme => ({
         flexDirection: "row",
         paddingLeft: 25
     },
-    orderIcon: {
+    orderChoiceContainer: {
+        display: "flex",
+        flexDirection: "row",
+        "&:hover": {
+            cursor: "pointer"
+        }
     },
     orderText: {
         marginLeft: 5,
@@ -29,22 +34,27 @@ const useStyles = theme => ({
 
 
 class OrderBar extends React.Component {
+
     render() {
         const { classes } = this.props;
         return (
             <Paper className={classes.paper}>
                 <Grid container>
-                    <Grid item className={classes.orderIcon}>
-                        <WhatshotIcon/>
+                    <Grid item className={classes.orderChoiceContainer} onClick={() => this.props.onOrderingChange('-hotness')}>
+                        <Grid item>
+                            <WhatshotIcon/>
+                        </Grid>
+                        <Grid item className={classes.orderText}>
+                            Hot
+                        </Grid>
                     </Grid>
-                    <Grid item className={classes.orderText}>
-                        Hot
-                    </Grid>
-                    <Grid item className={classes.orderIcon}>
-                        <NewReleasesIcon/>
-                    </Grid>
-                    <Grid item className={classes.orderText}>
-                        New
+                    <Grid item className={classes.orderChoiceContainer} onClick={() => this.props.onOrderingChange('-timestamp')}>
+                        <Grid item>
+                            <NewReleasesIcon/>
+                        </Grid>
+                        <Grid item className={classes.orderText}>
+                            New
+                        </Grid>
                     </Grid>
                 </Grid>
             </Paper>

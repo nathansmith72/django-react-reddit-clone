@@ -64,7 +64,8 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.apple',
     'allauth.socialaccount.providers.google',
-    'corsheaders'
+    'corsheaders',
+    'django_filters'
 ]
 
 PROJECT_APPS = [

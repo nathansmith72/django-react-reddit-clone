@@ -1,3 +1,5 @@
+import datetime
+
 import praw
 from celery.app import shared_task
 from django.conf import settings
@@ -15,11 +17,14 @@ def get_subreddits():
     )
     for subreddit in Subreddit.objects.all():
         hot_posts = reddit.subreddit(subreddit.name).hot(limit=10)
-        for post in hot_posts:
-            user = User.objects.get_or_create(username=post.author.name)[0]
-            Post.objects.get_or_create(
+        for reddit_post in hot_posts:
+            user = User.objects.get_or_create(username=reddit_post.author.name)[0]
+            post = Post.objects.get_or_create(
                 user=user,
-                title=post.title,
-                subreddit=subreddit
-            )
+                title=reddit_post.title,
+                subreddit=subreddit,
+            )[0]
+            post.timestamp = datetime.datetime.utcfromtimestamp(reddit_post.created_utc)
+            post.score = reddit_post.score
+            post.save()
 
