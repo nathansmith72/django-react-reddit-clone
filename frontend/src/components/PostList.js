@@ -13,8 +13,9 @@ const useStyles = theme => ({
         padding: theme.spacing(1),
         textAlign: 'left',
         color: theme.palette.text.secondary,
-        margin: 5,
         border: "1px solid transparent",
+        borderBottom: "1px solid black",
+        borderRadius: 0,
         '&:hover': {
             border: "1px solid #898989"
         }
@@ -34,6 +35,9 @@ const useStyles = theme => ({
         flexDirection: "row"
     },
     postMetaInfo: {
+
+    },
+    paperContainer: {
 
     }
 });
@@ -88,12 +92,11 @@ class PostList extends React.Component {
     }
 
     render () {
+        const { classes } = this.props;
         return (
-            <Container>
-                <Grid container spacing={1}>
-                    {this.renderPosts()}
-                </Grid>
-            </Container>
+            <Grid container className={classes.paperContainer}>
+                {this.renderPosts()}
+            </Grid>
         )
     }
 }

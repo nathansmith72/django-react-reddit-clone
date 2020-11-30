@@ -3,6 +3,8 @@ import TopNav from "../components/TopNav";
 import PostList from "../components/PostList";
 import withStyles from "@material-ui/core/styles/withStyles";
 import withRouter from "react-router-dom/es/withRouter";
+import OrderBar from "../components/OrderBar";
+import Container from "@material-ui/core/Container";
 
 const useStyles = theme => ({
     container: {
@@ -18,7 +20,10 @@ class Home extends React.Component {
         return (
             <div className={classes.container}>
                 <TopNav />
-                <PostList subredditSlug={this.props.match.params.slug}/>
+                <Container>
+                    <OrderBar />
+                    <PostList subredditSlug={this.props.match.params.slug}/>
+                </Container>
             </div>
         )
     }

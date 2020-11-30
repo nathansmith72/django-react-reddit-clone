@@ -2,6 +2,8 @@ import React from 'react';
 import TopNav from "../components/TopNav";
 import PostList from "../components/PostList";
 import withStyles from "@material-ui/core/styles/withStyles";
+import OrderBar from "../components/OrderBar";
+import Container from "@material-ui/core/Container";
 
 const useStyles = theme => ({
     container: {
@@ -16,7 +18,10 @@ class Home extends React.Component {
         return (
             <div className={classes.container}>
                 <TopNav />
-                <PostList />
+                <Container>
+                    <OrderBar />
+                    <PostList />
+                </Container>
             </div>
         )
     }
