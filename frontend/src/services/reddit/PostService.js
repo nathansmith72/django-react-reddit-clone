@@ -11,7 +11,15 @@ class PostService {
         }
         return axios.get(
             url,
-            // {headers: authHeader()}
+        ).then(response => {
+            return response.data;
+        })
+    }
+
+    getPost(id) {
+        let url = ROOT_URL + "/api/forums/posts/" + id + "/";
+        return axios.get(
+            url,
         ).then(response => {
             return response.data;
         })

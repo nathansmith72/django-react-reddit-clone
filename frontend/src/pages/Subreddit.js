@@ -13,7 +13,7 @@ const useStyles = theme => ({
     }
 });
 
-class Home extends React.Component {
+class Subreddit extends React.Component {
     constructor(props) {
         super(props);
         this.onOrderingChange = this.onOrderingChange.bind(this);
@@ -42,4 +42,4 @@ class Home extends React.Component {
     }
 }
 
-export default withRouter((withStyles(useStyles)(Home)));
+export default withRouter((withStyles(useStyles)(Subreddit)));

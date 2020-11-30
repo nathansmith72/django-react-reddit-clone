@@ -1,12 +1,13 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Container from "@material-ui/core/Container";
 import withStyles from "@material-ui/core/styles/withStyles";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import PostService from "../services/reddit/PostService"
+import PostService from "../services/reddit/PostService";
 import {Link} from "react-router-dom";
+import Redirect from "react-router-dom/es/Redirect";
+import withRouter from "react-router-dom/es/withRouter";
 
 const useStyles = theme => ({
     paper: {
@@ -41,6 +42,11 @@ const useStyles = theme => ({
     },
     paperContainer: {
 
+    },
+    subredditContainer: {
+        '&:hover': {
+            cursor: "pointer"
+        }
     }
 });
 
@@ -50,7 +56,8 @@ class PostList extends React.Component {
         super(props);
         this.subredditSlug = props.subredditSlug;
         this.state = {
-            posts: []
+            posts: [],
+            redirectTo: ''
         };
     }
 
@@ -80,12 +87,21 @@ class PostList extends React.Component {
         return raw_score
     }
 
+    navigateToPost(post) {
+        this.props.history.push('/p/' + post.id + '/')
+    }
+
+    navigateToSubreddit(e, post) {
+        e.stopPropagation();
+        this.props.history.push('/r/' + post.subreddit.slug + '/')
+    }
+
     renderPosts() {
         const { classes } = this.props;
         return this.state.posts.map(post => {
             return (
                 <Grid item xs={12} >
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} onClick={() => this.navigateToPost(post)}>
                         <div className={classes.postContainer}>
                             <div className={classes.votesContainer}>
                                 <ArrowUpwardIcon />
@@ -93,12 +109,11 @@ class PostList extends React.Component {
                                 <ArrowDownwardIcon />
                             </div>
                             <div>
-                                <div className={classes.postMetaInfo}><Link to={"/r/" + post.subreddit.slug}>r/{post.subreddit.slug}</Link> <span>•</span> Posted by {post.user.username}</div>
+                                <div className={classes.postMetaInfo}><span className={classes.subredditContainer} onClick={(e) => this.navigateToSubreddit(e, post)}><b>r/{post.subreddit.slug}</b></span> <span>•</span> Posted by {post.user.username}</div>
                                 <div><h3>{post.title}</h3></div>
                                 {post.image &&
-                                    <div><img alt="post image" src={post.image}/></div>
+                                    <div><img style={{ maxWidth: "100%" }} alt="post image" src={post.image}/></div>
                                 }
-
                             </div>
                         </div>
                     </Paper>
@@ -117,4 +132,4 @@ class PostList extends React.Component {
     }
 }
 
-export default withStyles(useStyles, {withTheme: true})(PostList);
+export default withRouter((withStyles(useStyles)(PostList)));

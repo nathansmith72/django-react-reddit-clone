@@ -26,5 +26,7 @@ def get_subreddits():
             )[0]
             post.timestamp = datetime.datetime.utcfromtimestamp(reddit_post.created_utc)
             post.score = reddit_post.score
+            if not reddit_post.is_self:  # We only want to work with link posts
+                post.image = reddit_post.url
             post.save()
 
