@@ -6,6 +6,10 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import RedditIcon from '@material-ui/icons/Reddit';
 import {Link} from "react-router-dom";
+import AuthService from '../services/auth/authService'
+import Modal from "@material-ui/core/Modal";
+import Paper from "@material-ui/core/Paper";
+import LoginForm from "./LoginForm";
 
 const useStyles = theme => ({
     appBar: {
@@ -36,10 +40,41 @@ const useStyles = theme => ({
         width: 35,
         height: 35,
         textAlign: "center"
+    },
+    modal: {
+        margin: "auto",
+        height: '500px',
+        width: '500px',
     }
 });
 
 class TopNav extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalOpen: false
+        }
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    userIsLoggedIn() {
+        return AuthService.isLoggedIn()
+    }
+
+    openModal() {
+        this.setState({
+            modalOpen: true
+        });
+    };
+
+    closeModal() {
+        this.setState({
+            modalOpen: false
+        });
+    };
+
     render() {
         const { classes } = this.props;
         return(
@@ -52,17 +87,31 @@ class TopNav extends React.Component {
                         <Link to="/" style={{textDecoration: "none"}}>
                             <Grid item style={{ display: "flex", flexDirection: 'row'}}>
 
-                                    <div className={classes.redditIconHolder}>
-                                        <RedditIcon style={{ color: "white", marginTop: 4 }} />
-                                    </div>
-                                    <div style={{ marginTop: 7, marginLeft: 10, color: "black" }}>Reddit</div>
+                                <div className={classes.redditIconHolder}>
+                                    <RedditIcon style={{ color: "white", marginTop: 4 }} />
+                                </div>
+                                <div style={{ marginTop: 7, marginLeft: 10, color: "black" }}>Reddit</div>
                             </Grid>
                         </Link>
                         <Grid item>search</Grid>
+                        {this.userIsLoggedIn() &&
+                            <Grid item>test</Grid>
+                        }
+                        {!this.userIsLoggedIn() &&
                         <Grid item>
-                            <Button variant="contained" color="primary" className={classes.logInButton}>LOG IN</Button>
+                            <Button variant="contained" color="primary" className={classes.logInButton} onClick={this.openModal}>LOG IN</Button>
                             <Button variant="contained" color="primary" className={classes.signUpButton}>SIGN UP</Button>
+                            <Modal
+                                open={this.state.modalOpen}
+                                onClose={this.closeModal}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                                className={classes.modal}
+                            >
+                                <LoginForm handleCloseModal={this.closeModal}/>
+                            </Modal>
                         </Grid>
+                        }
                     </Grid>
                 </Toolbar>
             </AppBar>
