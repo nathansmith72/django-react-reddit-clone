@@ -5,12 +5,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import PostService from "../services/reddit/PostService";
-import {Link} from "react-router-dom";
-import Redirect from "react-router-dom/es/Redirect";
 import withRouter from "react-router-dom/es/withRouter";
+import ChatIcon from '@material-ui/icons/Chat';
+import LinkIcon from '@material-ui/icons/Link';
 
 const useStyles = theme => ({
-    paper: {
+    // card layout styles
+    paperCard: {
         padding: theme.spacing(1),
         textAlign: 'left',
         color: theme.palette.text.secondary,
@@ -21,7 +22,7 @@ const useStyles = theme => ({
             border: "1px solid #898989"
         }
     },
-    votesContainer: {
+    votesContainerCard: {
         display: 'flex',
         flexDirection: 'column',
         marginRight: 10,
@@ -29,21 +30,49 @@ const useStyles = theme => ({
         minWidth: 50,
         alignItems: "center"
     },
-    voteCount: {
+    voteCountCard: {
         textAlign: 'center',
         padding: 5
     },
-    postContainer: {
+    postContainerCard: {
         display: "flex",
         flexDirection: "row"
     },
-    postMetaInfo: {
-
+    subredditContainerCard: {
+        '&:hover': {
+            cursor: "pointer"
+        }
     },
-    paperContainer: {
 
+    // compact layout styles
+    paperCompact: {
+        padding: theme.spacing(1),
+        textAlign: 'left',
+        color: theme.palette.text.secondary,
+        border: "1px solid transparent",
+        borderBottom: "1px solid black",
+        borderRadius: 0,
+        '&:hover': {
+            border: "1px solid #898989"
+        }
     },
-    subredditContainer: {
+    votesContainerCompact: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginRight: 10,
+        boarderRight: "1px solid black",
+        minWidth: 50,
+        alignItems: "center"
+    },
+    voteCountCompact: {
+        textAlign: 'center',
+        padding: 5
+    },
+    postContainerCompact: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    subredditContainerCompact: {
         '&:hover': {
             cursor: "pointer"
         }
@@ -96,30 +125,71 @@ class PostList extends React.Component {
         this.props.history.push('/r/' + post.subreddit.slug + '/')
     }
 
-    renderPosts() {
+    cardLayout(post) {
         const { classes } = this.props;
-        return this.state.posts.map(post => {
-            return (
-                <Grid item xs={12} >
-                    <Paper className={classes.paper} onClick={() => this.navigateToPost(post)}>
-                        <div className={classes.postContainer}>
-                            <div className={classes.votesContainer}>
-                                <ArrowUpwardIcon />
-                                    <div className={classes.voteCount}>{this.getScore(post)}</div>
-                                <ArrowDownwardIcon />
-                            </div>
-                            <div>
-                                <div className={classes.postMetaInfo}><span className={classes.subredditContainer} onClick={(e) => this.navigateToSubreddit(e, post)}><b>r/{post.subreddit.slug}</b></span> <span>•</span> Posted by {post.user.username}</div>
-                                <div><h3>{post.title}</h3></div>
-                                {post.image &&
-                                    <div><img style={{ maxWidth: "100%" }} alt="post image" src={post.image}/></div>
-                                }
-                            </div>
+        return (
+            <Grid item xs={12} >
+                <Paper className={classes.paperCard} onClick={() => this.navigateToPost(post)}>
+                    <div className={classes.postContainerCard}>
+                        <div className={classes.votesContainerCard}>
+                            <ArrowUpwardIcon />
+                            <div className={classes.voteCountCard}>{this.getScore(post)}</div>
+                            <ArrowDownwardIcon />
                         </div>
-                    </Paper>
-                </Grid>
-            )
-        })
+                        <div>
+                            <div className={classes.postMetaInfoCard}><span className={classes.subredditContainer} onClick={(e) => this.navigateToSubreddit(e, post)}><b>r/{post.subreddit.slug}</b></span> <span>•</span> Posted by {post.user.username}</div>
+                            <div><h3>{post.title}</h3></div>
+                            {post.image &&
+                            <div><img style={{ maxWidth: "100%" }} alt="post image" src={post.image}/></div>
+                            }
+                        </div>
+                    </div>
+                </Paper>
+            </Grid>
+        )
+    }
+
+    classicLayout() {
+
+    }
+
+    compactLayout(post) {
+        const { classes } = this.props;
+        return (
+            <Grid item xs={12} >
+                <Paper className={classes.paperCompact} onClick={() => this.navigateToPost(post)}>
+                    <div className={classes.postContainerCompact}>
+                        <div className={classes.votesContainerCompact}>
+                            <ArrowUpwardIcon />
+                            <div className={classes.voteCountCompact}>{this.getScore(post)}</div>
+                            <ArrowDownwardIcon />
+                        </div>
+                        {post.image &&
+                        <div style={{borderRadius: "5px ", marginRight: 10}}><img style={{ width: "75px", flexShrink: 0 }} alt="post image" src={post.image}/></div>
+                        }
+                        {post.link &&
+                        <div style={{width: "75px", flexShrink: 0, borderColor: 'rgb(237, 239, 241)', borderRadius: '4px', backgroundColor: "rgb(247 247 247)", marginRight: 10}}><div style={{marginTop: "25px", textAlign: "center"}}><ChatIcon/></div></div>
+                        }
+                        {!post.link && !post.image &&
+                        <div style={{width: "75px", flexShrink: 0, borderColor: 'rgb(237, 239, 241)', borderRadius: '4px', backgroundColor: "rgb(247 247 247)", marginRight: 10}}><div style={{marginTop: "25px", textAlign: "center"}}><LinkIcon/></div></div>
+                        }
+                        <div>
+                            <div><h3 style={{margin: 0}}>{post.title}</h3></div>
+                            <div className={classes.postMetaInfoCompact}><span className={classes.subredditContainer} onClick={(e) => this.navigateToSubreddit(e, post)}><b>r/{post.subreddit.slug}</b></span> <span>•</span> Posted by {post.user.username}</div>
+                        </div>
+                    </div>
+                </Paper>
+            </Grid>
+        )
+    }
+
+    renderPosts() {
+        if (this.props.layout === 'card') {
+            return this.state.posts.map(post => this.cardLayout(post))
+        }
+        if (this.props.layout === 'compact') {
+            return this.state.posts.map(post => this.compactLayout(post))
+        }
     }
 
     render () {

@@ -16,8 +16,10 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.onOrderingChange = this.onOrderingChange.bind(this);
+        this.onLayoutChange = this.onLayoutChange.bind(this);
         this.state = {
             ordering: "-hotness",
+            layout: "compact",
         }
     }
 
@@ -27,14 +29,23 @@ class Home extends React.Component {
         })
     }
 
+    onLayoutChange(layout) {
+        this.setState({
+            layout: layout
+        })
+    }
+
     render() {
         const { classes } = this.props;
         return (
             <div className={classes.container}>
                 <TopNav />
                 <Container>
-                    <OrderBar ordering={this.state.ordering} onOrderingChange={this.onOrderingChange}/>
-                    <PostList ordering={this.state.ordering}/>
+                    <OrderBar ordering={this.state.ordering}
+                              onOrderingChange={this.onOrderingChange}
+                              onLayoutChange={this.onLayoutChange}
+                    />
+                    <PostList ordering={this.state.ordering} layout={this.state.layout}/>
                 </Container>
             </div>
         )

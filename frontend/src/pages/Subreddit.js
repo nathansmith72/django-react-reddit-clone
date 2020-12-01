@@ -19,6 +19,7 @@ class Subreddit extends React.Component {
         this.onOrderingChange = this.onOrderingChange.bind(this);
         this.state = {
             ordering: "-hotness",
+            layout: "compact"
         }
     }
 
@@ -35,7 +36,7 @@ class Subreddit extends React.Component {
                 <TopNav />
                 <Container>
                     <OrderBar ordering={this.state.ordering} onOrderingChange={this.onOrderingChange}/>
-                    <PostList ordering={this.state.ordering} subredditSlug={this.props.match.params.slug}/>
+                    <PostList ordering={this.state.ordering} subredditSlug={this.props.match.params.slug} layout={this.state.layout}/>
                 </Container>
             </div>
         )

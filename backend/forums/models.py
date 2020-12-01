@@ -27,6 +27,7 @@ class Post(models.Model):
     body = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
     image = models.URLField(max_length=500, null=True)
+    link = models.URLField(max_length=500, null=True)
     ups = models.IntegerField(default=0)
     downs = models.IntegerField(default=0)
     score = models.IntegerField(default=0)

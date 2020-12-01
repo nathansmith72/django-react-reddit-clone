@@ -138,7 +138,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'get_subreddits': {
         'task': 'forums.tasks.get_subreddits',
-        'schedule': crontab(hour="*/1")
+        'schedule': crontab(minute="0")
     }
 }
 
