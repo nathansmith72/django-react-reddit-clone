@@ -103,7 +103,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 REST_USE_JWT = True
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100,
+    'PAGE_SIZE': 20,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
@@ -139,6 +139,10 @@ CELERY_BEAT_SCHEDULE = {
     'get_subreddits': {
         'task': 'forums.tasks.get_subreddits',
         'schedule': crontab(minute="0")
+    },
+    'set_hotness': {
+        'task': 'forums.tasks.set_hotness',
+        'schedule': crontab(minute="*/5")
     }
 }
 

@@ -34,3 +34,8 @@ def get_subreddits():
                     post.link = reddit_post.url
             post.save()
 
+
+@shared_task
+def set_hotness():
+    for post in Post.objects.all():
+        post.save()
