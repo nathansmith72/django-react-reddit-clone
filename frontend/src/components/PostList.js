@@ -15,12 +15,11 @@ const useStyles = theme => ({
         padding: theme.spacing(1),
         textAlign: 'left',
         color: theme.palette.text.secondary,
-        border: "1px solid transparent",
-        borderBottom: "1px solid black",
         borderRadius: 0,
         '&:hover': {
             border: "1px solid #898989"
-        }
+        },
+        marginBottom: "15px"
     },
     votesContainerCard: {
         display: 'flex',
