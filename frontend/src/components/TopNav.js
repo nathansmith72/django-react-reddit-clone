@@ -10,6 +10,7 @@ import AuthService from '../services/auth/authService'
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import LoginForm from "./LoginForm";
+import SearchBar from "./SearchBar";
 
 const useStyles = theme => ({
     appBar: {
@@ -39,7 +40,9 @@ const useStyles = theme => ({
         borderRadius: 50,
         width: 35,
         height: 35,
-        textAlign: "center"
+        textAlign: "center",
+        display: "inline-block",
+        marginTop: 2
     },
     modal: {
         margin: "auto",
@@ -82,23 +85,24 @@ class TopNav extends React.Component {
                 <Toolbar variant="dense">
                     <Grid container
                           direction="row"
-                          justify="space-between"
+                          justify="space-evenly"
                     >
-                        <Link to="/" style={{textDecoration: "none"}}>
-                            <Grid item style={{ display: "flex", flexDirection: 'row'}}>
 
+                        <Grid item style={{ display: "flex", flexDirection: 'row', flexGrow: 1}}>
+                            <Link to="/" style={{textDecoration: "none"}}>
                                 <div className={classes.redditIconHolder}>
                                     <RedditIcon style={{ color: "white", marginTop: 4 }} />
                                 </div>
-                                <div style={{ marginTop: 7, marginLeft: 10, color: "black" }}>Reddit</div>
-                            </Grid>
-                        </Link>
-                        <Grid item>search</Grid>
+                                <div style={{ marginLeft: 10, color: "black", display: "inline-block" }}>Reddit</div>
+                            </Link>
+                        </Grid>
+
+                        <Grid item style={{flexGrow: 1}}><SearchBar/></Grid>
                         {this.userIsLoggedIn() &&
-                            <Grid item>test</Grid>
+                        <Grid item style={{flexGrow: 1, textAlign: "right"}}>test</Grid>
                         }
                         {!this.userIsLoggedIn() &&
-                        <Grid item>
+                        <Grid item style={{flexGrow: 1}}>
                             <Button variant="contained" color="primary" className={classes.logInButton} onClick={this.openModal}>LOG IN</Button>
                             <Button variant="contained" color="primary" className={classes.signUpButton}>SIGN UP</Button>
                             <Modal
